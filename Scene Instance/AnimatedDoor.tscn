@@ -1,0 +1,128 @@
+[gd_scene load_steps=9 format=3 uid="uid://cosnr5nmh4gkx"]
+
+[ext_resource type="Material" uid="uid://bqm8sdnfr0upd" path="res://materials/door.tres" id="1_fac0i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yh0qm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n5p4k"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fpcgs"]
+size = Vector3(0.992065, 1, 1)
+
+[sub_resource type="Animation" id="Animation_2beno"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rigth_door:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Left_door:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_1gf3v"]
+resource_name = "open"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Rigth_door:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5708, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Left_door:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qxxmd"]
+_data = {
+"RESET": SubResource("Animation_2beno"),
+"open": SubResource("Animation_1gf3v")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ev1yk"]
+size = Vector3(3.8598, 3.86377, 1)
+
+[node name="StartMenuRoot" type="Node3D"]
+
+[node name="Rigth_door" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48881, 0, 0)
+
+[node name="right_door" type="StaticBody3D" parent="Rigth_door"]
+transform = Transform3D(1.5, 0, 0, 0, 3, 0, 0, 0, 0.1, 0.75, 1.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rigth_door/right_door"]
+shape = SubResource("BoxShape3D_yh0qm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rigth_door/right_door"]
+material_override = ExtResource("1_fac0i")
+mesh = SubResource("BoxMesh_n5p4k")
+
+[node name="Area3D" type="Area3D" parent="Rigth_door"]
+transform = Transform3D(1.7, 0, 0, 0, 3, 0, 0, 0, 3, 0.807875, 1.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rigth_door/Area3D"]
+shape = SubResource("BoxShape3D_fpcgs")
+
+[node name="Left_door" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.528, 0, 0)
+
+[node name="left_door" type="StaticBody3D" parent="Left_door"]
+transform = Transform3D(1.5, 0, 0, 0, 3, 0, 0, 0, 0.1, -0.75, 1.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Left_door/left_door"]
+material_override = ExtResource("1_fac0i")
+mesh = SubResource("BoxMesh_n5p4k")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Left_door/left_door"]
+shape = SubResource("BoxShape3D_yh0qm")
+
+[node name="Area3D" type="Area3D" parent="Left_door"]
+transform = Transform3D(1.4, 0, 0, 0, 3, 0, 0, 0, 3, -0.0265881, 1.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Left_door/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00963483, 0, 0)
+shape = SubResource("BoxShape3D_fpcgs")
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qxxmd")
+}
+
+[node name="Door" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.162445, 1.43188, 0)
+shape = SubResource("BoxShape3D_ev1yk")
+
+[connection signal="body_entered" from="Rigth_door/Area3D" to="Rigth_door" method="enter_trigger"]
+[connection signal="body_exited" from="Rigth_door/Area3D" to="Rigth_door" method="exit_trigger"]
